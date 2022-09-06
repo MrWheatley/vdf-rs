@@ -121,12 +121,15 @@ macro_rules! common_parsing {
 
         impl<'a> From<PestPair<'a, $rule>> for Value<'a> {
             fn from(grammar_value: PestPair<'a, $rule>) -> Self {
+                let line = grammar_value.as_span().start_pos().line_col().0 - 1;
+
                 // Structure: value is ( obj | quoted_string | unquoted_string )
                 match grammar_value.as_rule() {
                     // Structure: ( quoted_string | unquoted_string )
-                    <$rule>::quoted_string | <$rule>::unquoted_string => {
-                        Self::Str(parse_string(grammar_value))
-                    }
+                    <$rule>::quoted_string | <$rule>::unquoted_string => Self::Str {
+                        string: parse_string(grammar_value),
+                        line,
+                    },
                     // Structure: obj
                     //            \ pair* <- Desired
                     <$rule>::obj => {

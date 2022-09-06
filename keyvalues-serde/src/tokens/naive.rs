@@ -75,7 +75,13 @@ impl<'a> From<&'a NaiveTokenStream> for Vdf<'a> {
         {
             match tokens.next() {
                 // A `Str` is a single value
-                Some(NaiveToken::Str(s)) => (tokens, vec![Value::Str(Cow::from(s.clone()))]),
+                Some(NaiveToken::Str(s)) => (
+                    tokens,
+                    vec![Value::Str {
+                        string: Cow::from(s.clone()),
+                        line: 0,
+                    }],
+                ),
                 Some(NaiveToken::ObjBegin) => {
                     let (tokens, value) = process_obj(tokens);
                     (tokens, vec![value])
@@ -110,7 +116,13 @@ impl<'a> From<&'a NaiveTokenStream> for Vdf<'a> {
             I: Iterator<Item = &'a NaiveToken>,
         {
             match tokens.next() {
-                Some(NaiveToken::Str(s)) => (tokens, Some(Value::Str(Cow::from(s)))),
+                Some(NaiveToken::Str(s)) => (
+                    tokens,
+                    Some(Value::Str {
+                        string: Cow::from(s),
+                        line: 0,
+                    }),
+                ),
                 Some(NaiveToken::ObjBegin) => {
                     let (tokens, value) = process_obj(tokens);
                     (tokens, Some(value))

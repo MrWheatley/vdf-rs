@@ -35,7 +35,10 @@ fn vdf_from_token_stream_basics() {
         let mut sequence_obj = Obj::new();
         sequence_obj.insert(
             Cow::from("inner key"),
-            vec![Value::Str(Cow::from("inner val"))],
+            vec![Value::Str {
+                string: Cow::from("inner val"),
+                line: 0,
+            }],
         );
 
         let mut outer_val = Obj::new();
@@ -43,7 +46,10 @@ fn vdf_from_token_stream_basics() {
             Cow::from("sequence start"),
             vec![
                 Value::Obj(sequence_obj),
-                Value::Str(Cow::from("some other inner val")),
+                Value::Str {
+                    string: Cow::from("some other inner val"),
+                    line: 0,
+                },
             ],
         );
 

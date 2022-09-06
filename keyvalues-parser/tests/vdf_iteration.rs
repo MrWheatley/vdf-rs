@@ -15,8 +15,14 @@ fn simple_vdfs_iteration() {
 fn complex_vdfs_iteration() {
     let key1 = Cow::from("key1");
     let key4 = Cow::from("key4");
-    let val1 = Value::Str(Cow::from("val1"));
-    let val2 = Value::Str(Cow::from("val2"));
+    let val1 = Value::Str {
+        string: Cow::from("val1"),
+        line: 0,
+    };
+    let val2 = Value::Str {
+        string: Cow::from("val2"),
+        line: 0,
+    };
     let empty_obj = Value::Obj(Obj::new());
 
     let pairs = vec![

@@ -99,7 +99,7 @@ impl<'a> From<Value<'a>> for TokenStream<'a> {
         let mut inner = Vec::new();
 
         match value {
-            Value::Str(s) => inner.push(Token::Str(s)),
+            Value::Str { string, .. } => inner.push(Token::Str(string)),
             Value::Obj(obj) => {
                 inner.push(Token::ObjBegin);
                 inner.extend(Self::from(obj).0);

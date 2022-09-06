@@ -58,7 +58,7 @@ enum ValueDef<'a> {
 impl<'a> From<Value<'a>> for ValueDef<'a> {
     fn from(value: Value<'a>) -> Self {
         match value {
-            Value::Str(s) => Self::Str(s),
+            Value::Str { string, .. } => Self::Str(string),
             Value::Obj(obj) => Self::Obj(ObjDef::from(obj)),
         }
     }

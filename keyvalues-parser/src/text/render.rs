@@ -160,7 +160,7 @@ impl<'a> Value<'a> {
     ) -> fmt::Result {
         // Only `Obj` gets indented
         match self {
-            Value::Str(s) => write_str(writer, s, render_type),
+            Value::Str { string, .. } => write_str(writer, string, render_type),
             Value::Obj(obj) => {
                 writeln!(writer, "{}{{", multiple_char('\t', num_indents))?;
                 write_obj(writer, num_indents + 1, obj, render_type)?;
@@ -171,7 +171,7 @@ impl<'a> Value<'a> {
 
     fn find_invalid_raw_char(&self) -> Option<char> {
         match self {
-            Self::Str(s) => find_invalid_raw_char(s),
+            Self::Str { string, .. } => find_invalid_raw_char(string),
             Self::Obj(obj) => obj.iter().find_map(|(key, values)| {
                 find_invalid_raw_char(key)
                     .or_else(|| values.iter().find_map(Value::find_invalid_raw_char))

@@ -283,7 +283,7 @@ impl<'a> Iterator for IntoVdfs<'a> {
 #[cfg_attr(test, derive(serde::Deserialize, serde::Serialize))]
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Value<'a> {
-    Str(Cow<'a, str>),
+    Str { string: Cow<'a, str>, line: usize },
     Obj(Obj<'a>),
 }
 
@@ -325,8 +325,16 @@ impl<'a> Value<'a> {
     /// }
     /// ```
     pub fn get_str(&self) -> Option<&str> {
-        if let Self::Str(s) = self {
-            Some(s)
+        if let Self::Str { string, .. } = self {
+            Some(string)
+        } else {
+            None
+        }
+    }
+
+    pub fn get_line_number(&self) -> Option<usize> {
+        if let Self::Str { line, .. } = self {
+            Some(*line)
         } else {
             None
         }
@@ -365,8 +373,8 @@ impl<'a> Value<'a> {
     /// );
     /// ```
     pub fn get_mut_str(&mut self) -> Option<&mut Cow<'a, str>> {
-        if let Self::Str(s) = self {
-            Some(s)
+        if let Self::Str { string, .. } = self {
+            Some(string)
         } else {
             None
         }
@@ -449,8 +457,8 @@ impl<'a> Value<'a> {
 
     /// Refer to [Value::unwrap_str]. Same situation, but with a custom message
     pub fn expect_str(self, msg: &str) -> Cow<'a, str> {
-        if let Self::Str(s) = self {
-            s
+        if let Self::Str { string, .. } = self {
+            string
         } else {
             panic!("{}", msg)
         }
