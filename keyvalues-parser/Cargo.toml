@@ -12,13 +12,9 @@ homepage = "https://github.com/lovecraftianhorror/vdf-rs"
 repository = "https://github.com/lovecraftianhorror/vdf-rs"
 
 [dependencies]
-pest = "2.1"
-pest_derive = "2.1"
+pest = { git = "https://github.com/tomtau/pest", branch = "fix/line-col-fast", features = ["fast-line-col"] }
+pest_derive = { git = "https://github.com/tomtau/pest", branch = "fix/line-col-fast" }
 thiserror = "1.0.24"
-
-[patch.crates-io]
-pest = { git = "https://github.com/tomtau/pest/tree/fix/line-col-fast", branch = "fix/line-col-fast", features = ["fast-line-col"] }
-pest_derive = { git = "https://github.com/tomtau/pest/tree/fix/line-col-fast", branch = "fix/line-col-fast", features = ["fast-line-col"] }
 
 [dev-dependencies]
 criterion = "0.3.4"
